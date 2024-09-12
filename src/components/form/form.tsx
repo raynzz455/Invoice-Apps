@@ -1,22 +1,19 @@
 import React, { useState } from 'react';
 
 const Form: React.FC = () => {
-  // State untuk menyimpan nilai input
   const [bankName, setBankName] = useState('');
   const [accountNumber, setAccountNumber] = useState('');
   const [accountHolderName, setAccountHolderName] = useState('');
 
-  // Fungsi untuk menangani perubahan pada input
   const handleBankNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setBankName(e.target.value);
   };
 
   const handleAccountNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // Format nomor rekening (5 kelompok angka, masing-masing 2 angka)
     const formattedValue = e.target.value
-      .replace(/\D/g, '') // Hapus semua non-digit
-      .match(/.{1,2}/g) // Pisahkan setiap 2 digit
-      ?.join(' '); // Gabungkan dengan spasi
+      .replace(/\D/g, '') 
+      .match(/.{1,2}/g) 
+      ?.join(' '); 
     setAccountNumber(formattedValue || '');
   };
 
@@ -24,10 +21,8 @@ const Form: React.FC = () => {
     setAccountHolderName(e.target.value);
   };
 
-  // Fungsi untuk menangani pengiriman formulir
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Tindakan pengiriman formulir (misalnya, kirim data ke server)
     console.log('Bank Name:', bankName);
     console.log('Account Number:', accountNumber);
     console.log('Account Holder Name:', accountHolderName);
@@ -57,7 +52,7 @@ const Form: React.FC = () => {
           type="text"
           value={accountNumber}
           onChange={handleAccountNumberChange}
-          maxLength={14} // 5 kelompok angka, total 14 karakter
+          maxLength={14}
           className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
         />
       </div>
