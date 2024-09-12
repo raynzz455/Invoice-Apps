@@ -21,7 +21,7 @@ const Invoice: React.FC = () => {
             <h1 className="uppercase text-4xl roboto-bold">invoice</h1>
             <p className="uppercase text-[0.73rem] roboto-bold">cv. tuai dimensi kreasi</p>
           </div>
-          <div className="w-full space-y-5 text-xs">
+          <div className="w-full space-y-5 text-xs roboto-reguler">
             <p>Jln. Wijaya Kusuma <br/>No. 11 Komp IPB <br/> Sindang Barang 1<br/>Bogor 16117</p>
             <p>+62857.7123.1888</p>
             <p>tuai.ide@gmail.com</p>
@@ -38,12 +38,12 @@ const Invoice: React.FC = () => {
           <div className="mb-6">  
             <h1 className="text-[0.8rem] roboto-bold text-gray-500">Ditujukan kepada Yth:</h1>
             <p className="uppercase text-[0.9rem] roboto-bold text-gray-500">pt. techpack asia</p>
-            <p className="text-xs text-gray-500">Jl. Raya Karangawen KM 18 DEMAK 59566</p>
+            <p className="text-xs text-gray-500 roboto-reguler">Jl. Raya Karangawen KM 18 DEMAK 59566</p>
           </div>
 
           <div className="mb-6">
             <h1 className="text-[0.8rem] roboto-bold text-gray-500">Jenis Pekerjaan</h1>
-            <p className="text-xs text-gray-500">Digital Marketing Albea Indonesia</p>
+            <p className="text-xs text-gray-500 roboto-reguler">Digital Marketing Albea Indonesia</p>
           </div>
 
           <div className="mb-6">
@@ -65,32 +65,32 @@ const Invoice: React.FC = () => {
                 <tr  className="text-[0.7rem]">
                   <td className="px-2 border-b border-gray-200 text-left roboto-medium flex flex-col">
                     <p>NvmePre - 20 GB - IIX -</p><p className="text-[0.65rem]">albea.group.id</p><p>(09/07/2024-08/07/2025)</p></td>
-                  <td className="py-2 px-4 border-b border-gray-200 text-center border-x border-dotted">1</td>
-                  <td className="py-2 px-4 border-b border-gray-200 text-center border-x border-dotted">1.800.000</td>
-                  <td className="py-2 px-1 border-b border-gray-200 text-right border-x border-dotted">IDR 1.800.000,00</td>
+                  <td className="py-2 px-4 border-b border-gray-200 text-center border-x border-dotted roboto-reguler">1</td>
+                  <td className="py-2 px-4 border-b border-gray-200 text-center border-x border-dotted roboto-reguler">1.800.000</td>
+                  <td className="py-2 px-1 border-b border-gray-200 text-right border-x border-dotted roboto-reguler">IDR 1.800.000,00</td>
                 </tr>
                 <tr  className="text-[0.7rem]">
                   <td className="py-1 px-4 border-gray-200 border-l"></td>
                   <td className="py-1 px-4 border-b border-gray-200 border-x border-dotted"></td>
-                  <td className="py-1 px-4 border-b border-gray-200 border-x border-dotted text-left">Subtotal</td>
-                  <td className="py-1 px-1 border-b border-gray-200 border-x border-dotted text-right">IDR 1.800.000,00</td>
+                  <td className="py-1 px-4 border-b border-gray-200 border-x border-dotted text-left roboto-reguler">Subtotal</td>
+                  <td className="py-1 px-1 border-b border-gray-200 border-x border-dotted text-right roboto-reguler">IDR 1.800.000,00</td>
                 </tr>
                 <tr className="text-[0.7rem] border-y border-black">
                   <td className="py-1 px-4 border-gray-200 border-l"></td>
                   <td className="py-1 px-4 border-b border-gray-200 border-x border-dotted"></td>
-                  <td className="py-1 px-4 border-b border-gray-200 border-x border-dotted text-left">Total</td>
-                  <td className="py-1 px-1 border-b border-gray-200 border-x border-dotted text-right">IDR 1.800.000,00</td>
+                  <td className="py-1 px-4 border-b border-gray-200 border-x border-dotted text-left roboto-reguler">Total</td>
+                  <td className="py-1 px-1 border-b border-gray-200 border-x border-dotted text-right roboto-reguler">IDR 1.800.000,00</td>
                 </tr>
               </tbody>
             </table>
           </div>
           <p className="roboto-bold text-gray-500 text-[0.67rem] my-1">Harga Helum Termasuk Pajak</p>
           <p className="roboto-reguler text-gray-500 text-[0.58rem] ">Demikian invoice ini kami sampaikan, semoga kerjasama ini terjalin baik dan berkesinambungan.<br/>Atas perhatiannya kami ucapkan terima kasih.</p>
-          <p className="roboto-reguler text-gray-500 text-[0.58rem] my-10 text-top mt-8">Dengan Hormat</p>
+          <p className="roboto-reguler text-gray-500 text-[0.58rem] mb-8 mt-8">Dengan Hormat</p>
           <div className="w-[160px] h-[90px] border roboto-reguler text-gray-500 text-[0.58rem]">            
             <img src={`${process.env.PUBLIC_URL}/assets/`} alt="Tanda Tangan" className="w-full h-full" />
-            <p className="mt-10">Nama</p>
-            <p className="mx-1">(Jabatan)</p>
+            <p className="mt-10 roboto-reguler">Nama</p>
+            <p className="mx-1 roboto-reguler">(Jabatan)</p>
           </div>
         </div>
       </div>

@@ -1,26 +1,26 @@
+// App.tsx
 import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './App.css';
 import Invoice from "./components/invoice/invoice";
-
-const Navbar: React.FC = () => {
-  return (
-    <nav className="bg-white shadow-md">
-      <div className="container mx-auto px-4 py-2 flex justify-center items-center">
-        <img src={`${process.env.PUBLIC_URL}/assets/tuaide-icon.webp`} alt="Icon" className="h-10 w-10" />
-        <span className="ml-4 text-lg roboto-semibold">INVOICE</span>
-      </div>
-    </nav>
-  );
-};
+import Form from "./components/form/form";
+import Navbar from "./components/navbar/navbar";
 
 const App: React.FC = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <Navbar />
-      </header>
-      <Invoice />
-    </div>
+    <Router>
+      <div className="App">
+        <header className="App-header">
+          <Navbar />
+        </header>
+        <main>
+          <Routes>
+            <Route path="/" element={<Form />} />
+            <Route path="/invoice" element={<Invoice />} />
+          </Routes>
+        </main>
+      </div>
+    </Router>
   );
 };
 
