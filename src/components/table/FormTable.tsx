@@ -10,17 +10,15 @@ interface Product {
 }
 
 const formatCurrency = (value: number, showDecimals: boolean = false): string => {
-  // Format currency with or without decimal places based on the showDecimals flag
-  return new Intl.NumberFormat('id-ID', { 
-    style: 'currency', 
-    currency: 'IDR', 
+  return new Intl.NumberFormat('id-ID', {
+    style: 'currency',
+    currency: 'IDR',
     minimumFractionDigits: showDecimals ? 2 : 0,
     maximumFractionDigits: showDecimals ? 2 : 0,
   }).format(value);
 };
 
 const parseCurrency = (value: string): number => {
-  // Remove non-numeric characters except for commas
   return parseFloat(value.replace(/[^0-9]/g, '')) || 0;
 };
 
@@ -61,15 +59,31 @@ const FormTable: React.FC = () => {
   };
 
   const calculateSubtotal = () => {
-    const totalPrices = products.map(p => p.quantity * p.price);
-    return totalPrices.length > 1 ? totalPrices.slice(0, 2).reduce((sum, price) => sum + price, 0) : totalPrices[0] || 0;
+    // Subtotal is now the sum of all product total prices
+    return products.reduce((subtotal, product) => subtotal + product.quantity * product.price, 0);
+  };
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    // Validation for date consistency
+    let valid = true;
+    products.forEach((product, index) => {
+      if (new Date(product.endDate) < new Date(product.startDate)) {
+        valid = false;
+        alert(`Error: End date cannot be earlier than Start date for product ${index + 1}`);
+      }
+    });
+
+    if (valid) {
+      console.log('Submitted Products:', products);
+    }
   };
 
   const total = calculateTotalPrice();
   const subtotal = calculateSubtotal();
 
   return (
-    <div className="mx-auto max-w-[50vw]">
+    <form onSubmit={handleSubmit} className="mx-auto max-w-[50vw]">
       <table className="min-w-full bg-white border-gray-200 border-x">
         <thead className="bg-[#faa92e]">
           <tr className="text-center text-white text-[0.7rem] roboto-bold">
@@ -98,17 +112,15 @@ const FormTable: React.FC = () => {
                   className="w-full px-2 py-1 border border-gray-300 rounded-md mt-1"
                 />
                 <input
-                  type="text"
+                  type="date"
                   value={product.startDate}
                   onChange={(e) => handleProductChange(index, 'startDate', e.target.value)}
-                  placeholder="Tanggal Awal"
                   className="w-full px-2 py-1 border border-gray-300 rounded-md mt-1"
                 />
                 <input
-                  type="text"
+                  type="date"
                   value={product.endDate}
                   onChange={(e) => handleProductChange(index, 'endDate', e.target.value)}
-                  placeholder="Tanggal Akhir"
                   className="w-full px-2 py-1 border border-gray-300 rounded-md mt-1"
                 />
               </td>
@@ -157,12 +169,19 @@ const FormTable: React.FC = () => {
         </tbody>
       </table>
       <button
+        type="button"
         onClick={addProduct}
         className="mt-4 px-4 py-2 bg-indigo-600 text-white font-semibold rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
       >
         Add Product
       </button>
-    </div>
+      <button
+        type="submit"
+        className="ml-2 mt-4 px-4 py-2 bg-green-600 text-white font-semibold rounded-md shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+      >
+        Submit
+      </button>
+    </form>
   );
 };
 
