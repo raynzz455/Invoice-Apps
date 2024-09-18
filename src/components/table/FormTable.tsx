@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 import { supabase } from '../../supabaseClient';
+import { useNavigate } from 'react-router-dom'; 
+import Swal from 'sweetalert2'; 
 
 interface Product {
   description: string;
   company: string;
   tanggal_dimulai: string;
-  tanggal_berakhir: string; 
+  tanggal_berakhir: string;
   quantity: number;
   price: number;
-  folder_name: string; 
+  folder_name: string;
 }
 
 const formatCurrency = (value: number, showDecimals: boolean = false): string => {
@@ -30,12 +32,14 @@ const FormTable: React.FC<{ folderName: string }> = ({ folderName }) => {
       description: '',
       company: '',
       tanggal_dimulai: '',
-      tanggal_berakhir: '', 
+      tanggal_berakhir: '',
       quantity: 1,
       price: 0,
-      folder_name: folderName, 
+      folder_name: folderName,
     },
   ]);
+  
+  const navigate = useNavigate(); 
 
   const handleProductChange = (index: number, key: keyof Omit<Product, 'folder_name'>, value: any) => {
     const newProducts = [...products];
@@ -53,7 +57,7 @@ const FormTable: React.FC<{ folderName: string }> = ({ folderName }) => {
         tanggal_berakhir: '',
         quantity: 1,
         price: 0,
-        folder_name: folderName, 
+        folder_name: folderName,
       },
     ]);
   };
@@ -67,9 +71,9 @@ const FormTable: React.FC<{ folderName: string }> = ({ folderName }) => {
     e.preventDefault();
     let valid = true;
     products.forEach((product, index) => {
-      if (new Date(product.tanggal_berakhir) < new Date(product.tanggal_dimulai)) { 
+      if (new Date(product.tanggal_berakhir) < new Date(product.tanggal_dimulai)) {
         valid = false;
-        alert(`Error: Tanggal Berakhir cannot be earlier than Tanggal Dimulai for product ${index + 1}`);
+        Swal.fire('Error', `Tanggal Berakhir cannot be earlier than Tanggal Dimulai for product ${index + 1}`, 'error');
       }
     });
 
@@ -77,26 +81,37 @@ const FormTable: React.FC<{ folderName: string }> = ({ folderName }) => {
       try {
         const { error } = await supabase.from('table_invoice').insert(products);
         if (error) {
-          alert('Failed to submit data: ' + error.message);
+          Swal.fire('Failed', 'Failed to submit data: ' + error.message, 'error');
         } else {
-          alert('Data successfully submitted!');
+          Swal.fire({
+            title: 'Success!',
+            text: 'Data successfully submitted!',
+            icon: 'success',
+            timer: 1000,
+            showConfirmButton: false,
+          });
+
+          setTimeout(() => {
+            navigate('/'); 
+          }, 1000); 
+
           setProducts([
             {
               description: '',
               company: '',
               tanggal_dimulai: '',
-              tanggal_berakhir: '', 
+              tanggal_berakhir: '',
               quantity: 1,
               price: 0,
-              folder_name: folderName, 
+              folder_name: folderName,
             },
           ]);
         }
       } catch (err) {
         if (err instanceof Error) {
-          alert('Error: ' + err.message);
+          Swal.fire('Error', 'Error: ' + err.message, 'error');
         } else {
-          alert('An unknown error occurred');
+          Swal.fire('Error', 'An unknown error occurred', 'error');
         }
       }
     }
@@ -145,7 +160,7 @@ const FormTable: React.FC<{ folderName: string }> = ({ folderName }) => {
                 />
                 <input
                   type="date"
-                  value={product.tanggal_berakhir} 
+                  value={product.tanggal_berakhir}
                   onChange={(e) => handleProductChange(index, 'tanggal_berakhir', e.target.value)}
                   className="w-full px-2 py-1 border border-gray-300 rounded-md mt-1"
                   placeholder='Tanggal Berakhir'
