@@ -1,8 +1,10 @@
+// src/App.tsx
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './App.css';
 import Invoice from './components/invoice/invoice';
-import FormPage from './pages/FormPage';
+import FormPage from './pages/formPage/FormPage';
+import Home from './pages/home/home'
 import Navbar from './components/navbar/navbar';
 
 const App: React.FC = () => {
@@ -14,8 +16,8 @@ const App: React.FC = () => {
         </header>
         <main>
           <Routes>
-            <Route path="/" element={<div>Welcome</div>} />
-            <Route path="/form" element={<FormPage />} /> {/* Updated to render FormPage */}
+            <Route path="/" element={<Home />} /> 
+            <Route path="/form" element={<FormPage />} />
             <Route path="/invoice" element={<Invoice />} />
           </Routes>
         </main>

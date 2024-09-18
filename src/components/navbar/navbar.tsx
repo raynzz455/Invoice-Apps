@@ -4,8 +4,8 @@ import { Link } from 'react-router-dom';
 
 const Navbar: React.FC = () => {
   return (
-    <nav className="bg-white shadow-md">
-      <div className="container mx-auto px-4 py-2 flex justify-between items-center">
+    <nav className="bg-white shadow-md fixed-top">
+      <div className="mx-auto px-4 py-2 flex justify-between items-center">
         <img src={`${process.env.PUBLIC_URL}/assets/tuaide-icon.webp`} alt="Icon" className="h-10 w-10" />
         <span className="ml-4 text-lg roboto-semibold">INVOICE</span>
         <div className="space-x-4">
