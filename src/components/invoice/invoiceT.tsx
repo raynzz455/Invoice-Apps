@@ -3,6 +3,7 @@ import { supabase } from '../../supabaseClient';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 
+
 interface InvoiceDetails {
   bank_name: string;
   account_number: string;
@@ -77,15 +78,17 @@ const Invoice: React.FC<InvoiceTProps> = ({ folderName }) => {
     const invoiceElement = document.getElementById('invoice');
     if (!invoiceElement) return;
 
-    const canvas = await html2canvas(invoiceElement, { scale: 5 });
+    const body = document.body;
+    body.style.overflow = 'hidden'; 
+    const canvas = await html2canvas(invoiceElement, { scale: 5, useCORS: true });
     const imgData = canvas.toDataURL('image/png');
 
     if (format === 'pdf') {
-      const pdf = new jsPDF();
-      const imgWidth = 190;
+      const pdf = new jsPDF('portrait', 'pt', [695, 983]);
+      const imgWidth = 695;
       const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
-      pdf.addImage(imgData, 'PNG', 10, 10, imgWidth, imgHeight);
+      pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
       pdf.save('invoice.pdf');
     } else if (format === 'img') {
       const link = document.createElement('a');
@@ -93,6 +96,8 @@ const Invoice: React.FC<InvoiceTProps> = ({ folderName }) => {
       link.download = 'invoice.png';
       link.click();
     }
+
+    body.style.overflow = '';
   };
 
   if (!invoiceDetails) {

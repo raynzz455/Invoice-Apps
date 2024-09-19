@@ -1,6 +1,6 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-import InvoiceT from '../../components/invoice/invoice';
+import InvoiceT from '../../components/invoice/invoiceT';
 
 interface LocationState {
   folderName: string;
