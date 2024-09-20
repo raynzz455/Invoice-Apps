@@ -1,68 +1,66 @@
 .nav-dropdown {
-    position: absolute;
-    right: 16px; /* Mengatur jarak dari kanan */
-    background-color: white;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-    border-radius: 4px;
-    padding: 8px;
-    opacity: 0; /* Awalnya tersembunyi */
-    transform: translateX(100%); /* Mulai dari luar layar ke kanan */
-    transition: opacity 0.3s ease, transform 0.3s ease; /* Transisi untuk efek slide dan opacity */
-    z-index: 10;
-    margin-top: 30px; /* Jarak dari navbar */
-    visibility: hidden; /* Menghindari klik ketika tidak terlihat */
+  position: absolute;
+  right: 16px; /* Mengatur jarak dari kanan */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  border-radius: 4px;
+  padding: 8px;
+  opacity: 0; /* Awalnya tersembunyi */
+  transform: translateX(100%); /* Mulai dari luar layar ke kanan */
+  transition: opacity 0.3s ease, transform 0.3s ease; /* Transisi untuk efek slide dan opacity */
+  z-index: 10;
+  margin-top: 30px; /* Jarak dari navbar */
+  visibility: hidden; /* Menghindari klik ketika tidak terlihat */
 }
 
 .nav-dropdown.open {
-    opacity: 1; /* Menampilkan dengan opacity */
-    transform: translateX(0); /* Kembali ke posisi normal ketika terbuka */
-    visibility: visible; /* Membuat elemen dapat diinteraksi */
+  opacity: 1; /* Menampilkan dengan opacity */
+  transform: translateX(0); /* Kembali ke posisi normal ketika terbuka */
+  visibility: visible; /* Membuat elemen dapat diinteraksi */
 }
 
 .nav-dropdown.closing {
-    opacity: 0; /* Menghilangkan opacity */
-    transform: translateX(100%); /* Kembali ke posisi luar ketika menutup */
-    opacity: 0; /* Menyembunyikan ketika animasi selesai */
-    transition: opacity 0.3s ease, transform 0.3s ease; /* Menggunakan transisi yang sama */
+  opacity: 0; /* Menghilangkan opacity */
+  transform: translateX(100%); /* Kembali ke posisi luar ketika menutup */
+  opacity: 0; /* Menyembunyikan ketika animasi selesai */
+  transition: opacity 0.3s ease, transform 0.3s ease; /* Menggunakan transisi yang sama */
 }
 
 .nav-dropdown li {
-    list-style: none; /* Menghilangkan bullet */
-    margin: 0; /* Menghilangkan margin */
-    padding: 4px 0; /* Memberikan padding pada item */
+  list-style: none; /* Menghilangkan bullet */
+  margin: 0; /* Menghilangkan margin */
+  padding: 4px 0; /* Memberikan padding pada item */
 }
 
 
-  .burger-icon {
-    cursor: pointer;
-    transition: transform 0.3s;
-  }
-  
-  .burger-icon.open {
-    transform: rotateZ(90deg); /* Rotasi ketika dropdown terbuka */
-  }
-  
-  /* Untuk efek icon */
+.burger-icon {
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+
+.burger-icon.open {
+  transform: rotateZ(90deg); /* Rotasi ketika dropdown terbuka */
+}
+
+/* Untuk efek icon */
 .burger-icon span {
-    display: block;
-    width: 24px;
-    height: 3px;
-    background-color: #007bff; /* Warna untuk icon */
-    margin: 5px 0;
-    transition: all 0.3s;
-    border-radius: 2px; /* Menambahkan efek rounded */
+  display: block;
+  width: 24px;
+  height: 3px;
+  background-color: #007bff; /* Warna untuk icon */
+  margin: 5px 0;
+  transition: all 0.3s;
+  border-radius: 2px; /* Menambahkan efek rounded */
 }
 
-  
-  .burger-icon.open span:nth-child(1) {
-    transform: translateY(8px) rotate(45deg); /* Atas */
-  }
-  
-  .burger-icon.open span:nth-child(2) {
-    opacity: 0; /* Tengah hilang */
-  }
-  
-  .burger-icon.open span:nth-child(3) {
-    transform: translateY(-8px) rotate(-45deg); /* Bawah */
-  }
-  
+
+.burger-icon.open span:nth-child(1) {
+  transform: translateY(8px) rotate(45deg); /* Atas */
+}
+
+.burger-icon.open span:nth-child(2) {
+  opacity: 0; /* Tengah hilang */
+}
+
+.burger-icon.open span:nth-child(3) {
+  transform: translateY(-8px) rotate(-45deg); /* Bawah */
+}

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { supabase } from '../../supabaseClient';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
-
+import './invoice.css';
 
 interface InvoiceDetails {
   bank_name: string;
@@ -74,30 +74,44 @@ const Invoice: React.FC<InvoiceTProps> = ({ folderName }) => {
     }
   };
 
-  const handleDownload = async (format: 'pdf' | 'img') => {
+  const exportToPDF = () => {
     const invoiceElement = document.getElementById('invoice');
-    if (!invoiceElement) return;
+    if (invoiceElement) {
+      html2canvas(invoiceElement).then(canvas => {
+        const imgData = canvas.toDataURL('image/png');
+        const pdf = new jsPDF('portrait', 'mm', 'a4');
+        const imgWidth = 210; // A4 width in mm
+        const pageHeight = pdf.internal.pageSize.height; // Page height
+        const imgHeight = (canvas.height * imgWidth) / canvas.width; // Calculate height
+        let heightLeft = imgHeight;
 
-    const body = document.body;
-    body.style.overflow = 'hidden'; 
-    const canvas = await html2canvas(invoiceElement, { scale: 5, useCORS: true });
-    const imgData = canvas.toDataURL('image/png');
+        let position = 0;
 
-    if (format === 'pdf') {
-      const pdf = new jsPDF('portrait', 'pt', [695, 983]);
-      const imgWidth = 695;
-      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+        pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+        heightLeft -= pageHeight;
 
-      pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
-      pdf.save('invoice.pdf');
-    } else if (format === 'img') {
-      const link = document.createElement('a');
-      link.href = imgData;
-      link.download = 'invoice.png';
-      link.click();
+        while (heightLeft >= 0) {
+          position = heightLeft - imgHeight;
+          pdf.addPage();
+          pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+          heightLeft -= pageHeight;
+        }
+        pdf.save('invoice.pdf');
+      });
     }
+  };
 
-    body.style.overflow = '';
+  const exportToImage = () => {
+    const invoiceElement = document.getElementById('invoice');
+    if (invoiceElement) {
+      html2canvas(invoiceElement).then(canvas => {
+        const imgData = canvas.toDataURL('image/png');
+        const link = document.createElement('a');
+        link.href = imgData;
+        link.download = 'invoice.png';
+        link.click();
+      });
+    }
   };
 
   if (!invoiceDetails) {
@@ -115,40 +129,27 @@ const Invoice: React.FC<InvoiceTProps> = ({ folderName }) => {
 
   return (
     <div className='w-auto h-full'>
-      <div className="flex space-x-2 mt-10">
+      <div className="flex w-[695px] mx-auto mb-5 space-x-2 mt-10">
         <button 
-          onClick={() => handleDownload('pdf')} 
-          className="p-2 bg-blue-500 text-white rounded"
-        >
+          onClick={exportToPDF}
+          className="p-2 bg-[#1ddaf3] text-black rounded border roboto-bold border-black shadow-[3px_3px_0px_black] transition-transform hover:translate-x-1 hover:translate-y-1">
           Download PDF
         </button>
         <button 
-          onClick={() => handleDownload('img')} 
-          className="p-2 bg-green-500 text-white rounded"
-        >
+          onClick={exportToImage}
+          className="p-2 bg-[#d3f320] text-black rounded border roboto-bold border-black shadow-[3px_3px_0px_black] transition-transform hover:translate-x-1 hover:translate-y-1">
           Download Image
         </button>
       </div>
-      <div className="w-[695px] h-[983px] justify-center mx-auto bg-white" id="invoice">
-        <div className="w-full h-auto relative">
-          <div className="w-[234.6px] h-[369.6px] absolute opacity-40">
-            <img src={`${process.env.PUBLIC_URL}/assets/t-logo.png`} alt="Icon" className="w-full h-full" />
-          </div>
-          <div className="w-full">
-            <div className="w-[172.5px] h-[186.9px] justify-right top-0 right-0 absolute">
-              <img src={`${process.env.PUBLIC_URL}/assets/tuaide.png`} alt="Icon" className="w-full h-full" />
-            </div>
-          </div>
-        </div>
-
+      <div className="w-[695px] h-[983px] background-images justify-center mx-auto bg-white" id="invoice">
         <div className="w-full h-full pt-[15vh] pl-[4.5vw] pr-[3.5vw] space-x-3 flex">
           <div className="w-[215px] text-[#50723e] ml-4">
-            <div className="mb-8 w-full">
-              <h1 className="uppercase text-4xl roboto-bold">invoice</h1>
-              <p className="uppercase text-[0.73rem] roboto-bold">cv. tuai dimensi kreasi</p>
+            <div className="mb-6 mt-0 p-0 w-full">
+              <h1 className="uppercase text-4xl roboto-bold mt-0 p-0">Invoice</h1>
+              <p className="uppercase text-[0.73rem] roboto-bold">CV. Tuai Dimensi Kreasi</p>
             </div>
             <div className="w-full space-y-5 text-xs roboto-reguler">
-              <p>Jln. Wijaya Kusuma <br/>No. 11 Komp IPB <br/> Sindang Barang 1<br/>Bogor 16117</p>
+              <p>Jln. Wijaya Kusuma <br/> No. 11 Komp IPB <br/> Sindang Barang 1<br/> Bogor 16117</p>
               <p>+62857.7123.1888</p>
               <p>tuai.ide@gmail.com</p>
               <div className="space-y-0.5 roboto-bold">
@@ -183,8 +184,8 @@ const Invoice: React.FC<InvoiceTProps> = ({ folderName }) => {
 
             <div className="overflow-x-auto">
               <table className="w-full bg-white border-gray-200 border-x">
-                <thead className="bg-[#faa92e]">
-                  <tr className="text-center text-white text-[0.7rem] roboto-bold">
+                <thead className="bg-[#faa92e] p-0">
+                  <tr className="text-center text-white text-[0.78rem] roboto-bold p-0">
                     <th className="px-1 py-1.5 border-gray-200 border-x">Keterangan</th>
                     <th className="px-1 py-1.5 border-gray-200 border-x">Quantity</th>
                     <th className="px-1 py-1.5 border-gray-200 border-x">Harga (Rp)</th>
@@ -199,7 +200,7 @@ const Invoice: React.FC<InvoiceTProps> = ({ folderName }) => {
                         <td className="px-1 border-b border-gray-200 text-left roboto-medium flex flex-col">
                           <p>{item.description}</p>
                           <p className="text-[0.65rem]">{item.company}</p>
-                          <p>({new Date(item.tanggal_dimulai).toLocaleDateString()}-{new Date(item.tanggal_berakhir).toLocaleDateString()})</p>
+                          <p>({new Date(item.tanggal_dimulai).toLocaleDateString()} - {new Date(item.tanggal_berakhir).toLocaleDateString()})</p>
                         </td>
                         <td className="py-2 px-4 border-b border-gray-200 text-center border-x border-dotted roboto-reguler">{item.quantity}</td>
                         <td className="py-2 px-4 border-b border-gray-200 text-center border-x border-dotted roboto-reguler">{item.price.toLocaleString()}</td>
