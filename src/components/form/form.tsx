@@ -141,7 +141,7 @@ const Form: React.FC<FormProps> = ({ setFolderName, onFormSubmit }) => {
               value={folderName}
               onChange={handleFolderNameChange}
               disabled={isSubmitted}
-              className={`mt-1 block w-full max-w-[50%] px-3 py-2 border-2 border-black rounded-md sm:text-xs ${validationErrors.includes('Folder Name is required.') ? 'border-red-500 shadow-[2.5px_2.5px_0px_red]' : 'border-black shadow-[3px_3px_0px_black]'}`}
+              className={`mt-1 block w-full max-w-[50%] px-3 py-2 border-2 border-black shadow-[3px_3px_0px_black] rounded-md text-xs focus:scale-105 transition-transform ease-in-out  ${validationErrors.includes('Folder Name is required.') ? 'border-red-500 shadow-[2.5px_2.5px_0px_red]' : ''}`}
             />
             {validationErrors.includes('Folder Name is required.') && <p className="text-red-500 text-xs">Folder Name is required.</p>}
           </div>
@@ -156,7 +156,7 @@ const Form: React.FC<FormProps> = ({ setFolderName, onFormSubmit }) => {
                 type="text"
                 value={bankName}
                 onChange={handleBankNameChange}
-                className={`mt-1 block w-full px-3 py-2 border-2 border-black rounded-md shadow-md sm:text-xs ${validationErrors.includes('Bank Name is required.') ? 'border-red-500 shadow-[2.5px_2.5px_0px_red]' : 'border-black shadow-[3px_3px_0px_black]'}`}
+                className={`mt-1 block w-full px-3 py-2 border-2 border-black shadow-[3px_3px_0px_black] rounded-md text-xs focus:scale-105 transition-transform ease-in-out ${validationErrors.includes('Bank Name is required.') ? 'border-red-500 shadow-[2.5px_2.5px_0px_red]' : ''}`}
               />
               {validationErrors.includes('Bank Name is required.') && <p className="text-red-500 text-xs">Bank Name is required.</p>}
             </div>
@@ -171,7 +171,7 @@ const Form: React.FC<FormProps> = ({ setFolderName, onFormSubmit }) => {
                 value={accountNumber}
                 onChange={handleAccountNumberChange}
                 maxLength={14}
-                className={`mt-1 block w-full px-3 py-2 border-2 border-black rounded-md shadow-md sm:text-xs ${validationErrors.includes('Account Number is required.') ? 'border-red-500 shadow-[2.5px_2.5px_0px_red]' : 'border-black shadow-[3px_3px_0px_black]'}`}
+                className={`mt-1 block w-full px-3 py-2 border-2 border-black shadow-[3px_3px_0px_black] rounded-md text-xs focus:scale-105 transition-transform ease-in-out ${validationErrors.includes('Account Number is required.') ? 'border-red-500 shadow-[2.5px_2.5px_0px_red]' : ''}`}
               />
               {validationErrors.includes('Account Number is required.') && <p className="text-red-500 text-xs">Account Number is required.</p>}
             </div>
@@ -185,7 +185,7 @@ const Form: React.FC<FormProps> = ({ setFolderName, onFormSubmit }) => {
                 type="text"
                 value={accountHolderName}
                 onChange={handleAccountHolderNameChange}
-                className={`mt-1 block w-full px-3 py-2 border-2 border-black rounded-md shadow-md sm:text-xs ${validationErrors.includes('Account Holder Name is required.') ? 'border-red-500 shadow-[2.5px_2.5px_0px_red]' : 'border-black shadow-[3px_3px_0px_black]'}`}
+                className={`mt-1 block w-full px-3 py-2 border-2 border-black shadow-[3px_3px_0px_black] rounded-md text-xs focus:scale-105 transition-transform ease-in-out ${validationErrors.includes('Account Holder Name is required.') ? 'border-red-500 shadow-[2.5px_2.5px_0px_red]' : ''}`}
               />
               {validationErrors.includes('Account Holder Name is required.') && <p className="text-red-500 text-xs">Account Holder Name is required.</p>}
             </div>
@@ -223,7 +223,7 @@ const Form: React.FC<FormProps> = ({ setFolderName, onFormSubmit }) => {
               type="text"
               value={recipientName}
               onChange={handleRecipientNameChange}
-              className={`mt-1 block w-full px-3 py-2 border-2 border-black rounded-md shadow-md sm:text-xs ${validationErrors.includes('Recipient Name is required.') ? 'border-red-500 shadow-[2.5px_2.5px_0px_red]' : 'border-black shadow-[3px_3px_0px_black]'}`}
+              className={`mt-1 block w-full px-3 py-2 border-2 border-black shadow-[3px_3px_0px_black] rounded-md text-xs focus:scale-105 transition-transform ease-in-out ${validationErrors.includes('Recipient Name is required.') ? 'border-red-500 shadow-[2.5px_2.5px_0px_red]' : ''}`}
             />
             {validationErrors.includes('Recipient Name is required.') && <p className="text-red-500 text-xs">Recipient Name is required.</p>}
           </div>
@@ -238,7 +238,7 @@ const Form: React.FC<FormProps> = ({ setFolderName, onFormSubmit }) => {
                 type="text"
                 value={address}
                 onChange={handleAddressChange}
-                className={`mt-1 block w-full px-3 py-2 border-2 border-black rounded-md shadow-md sm:text-xs ${validationErrors.includes('Address is required.') ? 'border-red-500 shadow-[2.5px_2.5px_0px_red]' : 'border-black shadow-[3px_3px_0px_black]'}`}
+                className={`mt-1 block w-full px-3 py-2 border-2 border-black shadow-[3px_3px_0px_black] rounded-md text-xs focus:scale-105 transition-transform ease-in-out ${validationErrors.includes('Address is required.') ? 'border-red-500 shadow-[2.5px_2.5px_0px_red]' : ''}`}
               />
               {validationErrors.includes('Address is required.') && <p className="text-red-500 text-xs">Address is required.</p>}
             </div>
@@ -252,7 +252,7 @@ const Form: React.FC<FormProps> = ({ setFolderName, onFormSubmit }) => {
                 type="text"
                 value={jobDescription}
                 onChange={handleJobDescriptionChange}
-                className={`mt-1 block w-full px-3 py-2 border-2 border-black rounded-md shadow-md sm:text-xs ${validationErrors.includes('Job Description is required.') ? 'border-red-500 shadow-[2.5px_2.5px_0px_red]' : 'border-black shadow-[3px_3px_0px_black]'}`}
+                className={`mt-1 block w-full px-3 py-2 border-2 border-black shadow-[3px_3px_0px_black] rounded-md text-xs focus:scale-105 transition-transform ease-in-out ${validationErrors.includes('Job Description is required.') ? 'border-red-500 shadow-[2.5px_2.5px_0px_red]' : ''}`}
               />
               {validationErrors.includes('Job Description is required.') && <p className="text-red-500 text-xs">Job Description is required.</p>}
             </div>
@@ -268,7 +268,7 @@ const Form: React.FC<FormProps> = ({ setFolderName, onFormSubmit }) => {
                 type="text"
                 value={invoiceNumber}
                 onChange={handleInvoiceNumberChange}
-                className={`mt-1 block w-full px-3 py-2 border-2 border-black rounded-md shadow-md sm:text-xs ${validationErrors.includes('Invoice Number is required.') ? 'border-red-500 shadow-[2.5px_2.5px_0px_red]' : 'border-black shadow-[3px_3px_0px_black]'}`}
+                className={`mt-1 block w-full px-3 py-2 border-2 border-black shadow-[3px_3px_0px_black] rounded-md text-xs focus:scale-105 transition-transform ease-in-out ${validationErrors.includes('Invoice Number is required.') ? 'border-red-500 shadow-[2.5px_2.5px_0px_red]' : ''}`}
               />
               {validationErrors.includes('Invoice Number is required.') && <p className="text-red-500 text-xs">Invoice Number is required.</p>}
             </div>
@@ -282,7 +282,7 @@ const Form: React.FC<FormProps> = ({ setFolderName, onFormSubmit }) => {
                 type="date"
                 value={date}
                 onChange={handleDateChange}
-                className={`mt-1 block w-full px-3 py-2 border-2 border-black rounded-md shadow-md sm:text-xs ${validationErrors.includes('Date is required.') ? 'border-red-500 shadow-[2.5px_2.5px_0px_red]' : 'border-black shadow-[3px_3px_0px_black]'}`}
+                className={`mt-1 block w-full px-3 py-2 border-2 border-black shadow-[3px_3px_0px_black] rounded-md text-xs focus:scale-105 transition-transform ease-in-out ${validationErrors.includes('Date is required.') ? 'border-red-500 shadow-[2.5px_2.5px_0px_red]' : ''}`}
               />
               {validationErrors.includes('Date is required.') && <p className="text-red-500 text-xs">Date is required.</p>}
             </div>
