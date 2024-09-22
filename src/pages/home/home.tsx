@@ -43,7 +43,7 @@ const Home: React.FC = () => {
               + New Invoice
             </button>
           </div>
-          <div className="grid grid-cols-4 gap-5 p-5">
+          <div className="grid grid-cols-4 gap-5 py-5 p-3 border-4 border-black h-full rounded-xl mt-5">
             {invoiceDetails.map((invoice, index) => (
               <div
                 key={index}

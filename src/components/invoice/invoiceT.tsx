@@ -76,20 +76,30 @@ const Invoice: React.FC<InvoiceTProps> = ({ folderName }) => {
 
   const exportToPDF = () => {
     const invoiceElement = document.getElementById('invoice');
+    const contentLeftElement = document.querySelector('.content-left') as HTMLElement;
+    const h1Element = document.querySelector('.header-left h1') as HTMLElement;
+  
+    // Temporarily modify styles for PDF generation
+    if (contentLeftElement) {
+      contentLeftElement.style.paddingTop = '0'; // Set padding-top to 0
+    }
+    if (h1Element) {
+      h1Element.style.paddingBottom = '10px'; // Set padding-bottom to 10px
+    }
+  
     if (invoiceElement) {
-      html2canvas(invoiceElement).then(canvas => {
+      html2canvas(invoiceElement, { scale: 4 }).then(canvas => {
         const imgData = canvas.toDataURL('image/png');
         const pdf = new jsPDF('portrait', 'mm', 'a4');
         const imgWidth = 210; // A4 width in mm
         const pageHeight = pdf.internal.pageSize.height; // Page height
         const imgHeight = (canvas.height * imgWidth) / canvas.width; // Calculate height
         let heightLeft = imgHeight;
-
         let position = 0;
-
+  
         pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
         heightLeft -= pageHeight;
-
+  
         while (heightLeft >= 0) {
           position = heightLeft - imgHeight;
           pdf.addPage();
@@ -97,23 +107,50 @@ const Invoice: React.FC<InvoiceTProps> = ({ folderName }) => {
           heightLeft -= pageHeight;
         }
         pdf.save('invoice.pdf');
+  
+        // Reset styles after generating PDF
+        if (contentLeftElement) {
+          contentLeftElement.style.paddingTop = ''; // Reset padding-top
+        }
+        if (h1Element) {
+          h1Element.style.paddingBottom = ''; // Reset padding-bottom
+        }
       });
     }
   };
-
+  
   const exportToImage = () => {
     const invoiceElement = document.getElementById('invoice');
+    const contentLeftElement = document.querySelector('.content-left') as HTMLElement;
+    const h1Element = document.querySelector('.header-left h1') as HTMLElement;
+  
+    // Temporarily modify styles for image generation
+    if (contentLeftElement) {
+      contentLeftElement.style.paddingTop = '0'; // Set padding-top to 0
+    }
+    if (h1Element) {
+      h1Element.style.paddingBottom = '10px'; // Set padding-bottom to 10px
+    }
+  
     if (invoiceElement) {
-      html2canvas(invoiceElement).then(canvas => {
+      html2canvas(invoiceElement, { scale: 4 }).then(canvas => {
         const imgData = canvas.toDataURL('image/png');
         const link = document.createElement('a');
         link.href = imgData;
         link.download = 'invoice.png';
         link.click();
+  
+        // Reset styles after generating image
+        if (contentLeftElement) {
+          contentLeftElement.style.paddingTop = ''; // Reset padding-top
+        }
+        if (h1Element) {
+          h1Element.style.paddingBottom = ''; // Reset padding-bottom
+        }
       });
     }
   };
-
+  
   if (!invoiceDetails) {
     return <p>Loading...</p>;
   }
@@ -141,18 +178,19 @@ const Invoice: React.FC<InvoiceTProps> = ({ folderName }) => {
           Download Image
         </button>
       </div>
-      <div className="w-[695px] h-[983px] background-images justify-center mx-auto bg-white" id="invoice">
-        <div className="w-full h-full pt-[15vh] pl-[4.5vw] pr-[3.5vw] space-x-3 flex">
-          <div className="w-[215px] text-[#50723e] ml-4">
-            <div className="mb-6 mt-0 p-0 w-full">
-              <h1 className="uppercase text-4xl roboto-bold mt-0 p-0">Invoice</h1>
+      <div className="w-[794px] h-[1123px] background-images justify-center mx-auto" id="invoice">
+        <div className="main w-full h-full pt-[160px] px-[80px] space-x-2 flex">
+          
+        <div className="content-left w-[215px] text-[#50723e] ml-5 pt-[10px]">
+            <div className="header-left mb-6 w-full">
+              <h1 className="uppercase text-4xl roboto-bold">Invoice</h1>
               <p className="uppercase text-[0.73rem] roboto-bold">CV. Tuai Dimensi Kreasi</p>
             </div>
-            <div className="w-full space-y-5 text-xs roboto-reguler">
+            <div className="w-full text-xs roboto-reguler">
               <p>Jln. Wijaya Kusuma <br/> No. 11 Komp IPB <br/> Sindang Barang 1<br/> Bogor 16117</p>
-              <p>+62857.7123.1888</p>
+              <p className='my-8'>+62857.7123.1888</p>
               <p>tuai.ide@gmail.com</p>
-              <div className="space-y-0.5 roboto-bold">
+              <div className="space-y-0.5 roboto-bold mt-5">
                 <p>Rekening Pembayaran</p> 
                 <p>{invoiceDetails.bank_name}</p> 
                 <p>{invoiceDetails.account_number}</p> 
@@ -161,10 +199,10 @@ const Invoice: React.FC<InvoiceTProps> = ({ folderName }) => {
             </div>
           </div>
 
-          <div className="w-full">
-            <div className="mb-6">  
+          <div className="content-right w-full pt-[10px]">
+            <div className="mb-6 ">  
               <h1 className="text-[0.8rem] roboto-bold text-gray-500">Ditujukan kepada Yth:</h1>
-              <p className="uppercase text-[0.9rem] roboto-bold text-gray-500">{invoiceDetails.recipient_name}</p> 
+              <p className="uppercase text-[0.85rem] roboto-bold text-gray-500">{invoiceDetails.recipient_name}</p> 
               <p className="text-xs text-gray-500 roboto-reguler">{invoiceDetails.address}</p> 
             </div>
 
