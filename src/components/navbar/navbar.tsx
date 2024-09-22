@@ -41,9 +41,6 @@ const Navbar: React.FC = () => {
               <li>
                 <Link to="/form" className="text-black roboto-medium hover:underline">Form</Link>
               </li>
-              <li>
-                <Link to="/invoice" className="text-black roboto-medium hover:underline">Invoice</Link>
-              </li>
             </ul>
           </div>
         </div>
