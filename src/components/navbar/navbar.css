@@ -32,6 +32,12 @@
 }
 
 
+.burger-icon:hover span {
+  background-color: black; /* Set background to black on hover */
+  transition: background-color 0.3s ease; /* Smooth transition */
+}
+
+/* Existing styles */
 .burger-icon {
   cursor: pointer;
   transition: transform 0.3s;
@@ -46,21 +52,28 @@
   display: block;
   width: 24px;
   height: 3px;
-  background-color: #007bff; /* Warna untuk icon */
+  background-color: transparent; /* Set to transparent */
+  border: 1px solid black; /* Add a black border */
   margin: 5px 0;
-  transition: all 0.3s;
-  border-radius: 2px; /* Menambahkan efek rounded */
+  transition: all 0.3s; /* Smooth transition for other properties */
+  border-radius: 2px; /* Keep rounded edges */
 }
 
+/* Adjust open state styles */
+.burger-icon.open span {
+  background-color: transparent; /* Ensure background is still transparent */
+  border: 2px solid black; /* Maintain black border */
+}
 
 .burger-icon.open span:nth-child(1) {
-  transform: translateY(8px) rotate(45deg); /* Atas */
+  transform: translateY(8px) rotate(45deg); /* Top span animation */
 }
 
 .burger-icon.open span:nth-child(2) {
-  opacity: 0; /* Tengah hilang */
+  opacity: 0; /* Middle span will disappear */
+  border: none; /* Remove border when hidden */
 }
 
 .burger-icon.open span:nth-child(3) {
-  transform: translateY(-8px) rotate(-45deg); /* Bawah */
+  transform: translateY(-8px) rotate(-45deg); /* Bottom span animation */
 }

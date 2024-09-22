@@ -25,7 +25,7 @@ const Navbar: React.FC = () => {
           <Link to="/" className="text-lg roboto-bold px-3 py-1 mt-2 border border-black rounded-lg shadow-[5px_5px_0px_black] transition-transform hover:translate-x-1 hover:translate-y-1">
             Tuaide
           </Link>
-          <div className='flex flex-col relative ml-auto border p-1'>
+          <div className='flex flex-col relative ml-auto'>
             <div 
               className={`burger-icon ${isOpen ? 'open' : ''}`} 
               onClick={toggleDropdown}
@@ -36,13 +36,13 @@ const Navbar: React.FC = () => {
             </div>
             <ul className={`nav-dropdown ${isOpen ? 'open' : ''} ${isClosing ? 'closing' : ''}`}>
               <li>
-                <Link to="/" className="text-blue-500 hover:underline">Home</Link>
+                <Link to="/" className="text-black roboto-medium hover:underline">Home</Link>
               </li>
               <li>
-                <Link to="/form" className="text-blue-500 hover:underline">Form</Link>
+                <Link to="/form" className="text-black roboto-medium hover:underline">Form</Link>
               </li>
               <li>
-                <Link to="/invoice" className="text-blue-500 hover:underline">Invoice</Link>
+                <Link to="/invoice" className="text-black roboto-medium hover:underline">Invoice</Link>
               </li>
             </ul>
           </div>
