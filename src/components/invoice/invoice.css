@@ -1,23 +1,13 @@
 .background-images{
     background-image: url('/public/assets/background-invoice.png');
-    background-size: cover;  /* Agar gambar memenuhi div */
-    background-position: center;  /* Untuk memusatkan gambar */
-    background-repeat: no-repeat;  /* Mencegah gambar diulang */
+    background-size: cover;  
+    background-position: center; 
+    background-repeat: no-repeat; 
   }
-  /* invoice.css */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+.whitespace-pre {
+  white-space: pre-wrap;
 }
-
-@media print {
-  h1, p {
-    margin: 0; /* Mengatur margin agar tidak mengganggu layout */
-  }
-}
-
-/* Anda juga bisa menambahkan aturan khusus untuk tabel */
-table {
-  border-collapse: collapse; /* Mencegah jarak antar border */
+.content-table {
+  font-size: 0.7rem;
+  line-height: 0.9rem; /* Atur line-height sesuai kebutuhan */
 }

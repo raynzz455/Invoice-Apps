@@ -20,9 +20,6 @@ interface InvoiceItem {
   description: string;
   quantity: number;
   price: number;
-  company: string;
-  tanggal_dimulai: string;
-  tanggal_berakhir: string;
 }
 
 interface InvoiceTProps {
@@ -33,6 +30,10 @@ const Invoice: React.FC<InvoiceTProps> = ({ folderName }) => {
   const [invoiceDetails, setInvoiceDetails] = useState<InvoiceDetails | null>(null);
   const [invoiceItems, setInvoiceItems] = useState<InvoiceItem[]>([]);
   const [signature, setSignature] = useState<string | null>(null);
+  
+  const [nama, setNama] = useState('');
+  const [jabatan, setJabatan] = useState('');
+  const [error, setError] = useState('');
 
   useEffect(() => {
     const fetchInvoiceData = async () => {
@@ -74,26 +75,46 @@ const Invoice: React.FC<InvoiceTProps> = ({ folderName }) => {
     }
   };
 
+  const validateInputs = () => {
+    if (!nama || !jabatan || !signature) {
+      setError('Nama, Jabatan, dan Tanda Tangan harus diisi.');
+      return false;
+    }
+    setError('');
+    return true;
+  }; 
   const exportToPDF = () => {
+    if (!validateInputs()) return;
     const invoiceElement = document.getElementById('invoice');
     const contentLeftElement = document.querySelector('.content-left') as HTMLElement;
     const h1Element = document.querySelector('.header-left h1') as HTMLElement;
+    const thElements = document.querySelectorAll('th');
+    thElements.forEach(th => {
+      th.style.paddingTop = '0'; 
+      th.style.paddingBottom = '12px'; 
+    });
   
-    // Temporarily modify styles for PDF generation
+    const tdElements = document.querySelectorAll('td');
+    tdElements.forEach(td => {
+      if (td.classList.contains('text-left')) {
+        td.style.paddingBottom = '8px'; 
+      }
+    });
+  
     if (contentLeftElement) {
-      contentLeftElement.style.paddingTop = '0'; // Set padding-top to 0
+      contentLeftElement.style.paddingTop = '0'; 
     }
     if (h1Element) {
-      h1Element.style.paddingBottom = '10px'; // Set padding-bottom to 10px
+      h1Element.style.paddingBottom = '10px'; 
     }
   
     if (invoiceElement) {
       html2canvas(invoiceElement, { scale: 4 }).then(canvas => {
         const imgData = canvas.toDataURL('image/png');
         const pdf = new jsPDF('portrait', 'mm', 'a4');
-        const imgWidth = 210; // A4 width in mm
-        const pageHeight = pdf.internal.pageSize.height; // Page height
-        const imgHeight = (canvas.height * imgWidth) / canvas.width; // Calculate height
+        const imgWidth = 210; 
+        const pageHeight = pdf.internal.pageSize.height; 
+        const imgHeight = (canvas.height * imgWidth) / canvas.width; 
         let heightLeft = imgHeight;
         let position = 0;
   
@@ -107,29 +128,48 @@ const Invoice: React.FC<InvoiceTProps> = ({ folderName }) => {
           heightLeft -= pageHeight;
         }
         pdf.save('invoice.pdf');
-  
-        // Reset styles after generating PDF
+        thElements.forEach(th => {
+          th.style.paddingTop = '';
+          th.style.paddingBottom = '';
+        });
+        tdElements.forEach(td => {
+          if (td.classList.contains('text-left')) {
+            td.style.paddingBottom = '';
+          }
+        });
         if (contentLeftElement) {
-          contentLeftElement.style.paddingTop = ''; // Reset padding-top
+          contentLeftElement.style.paddingTop = '';
         }
         if (h1Element) {
-          h1Element.style.paddingBottom = ''; // Reset padding-bottom
+          h1Element.style.paddingBottom = ''; 
         }
       });
     }
   };
   
   const exportToImage = () => {
+    if (!validateInputs()) return;
     const invoiceElement = document.getElementById('invoice');
     const contentLeftElement = document.querySelector('.content-left') as HTMLElement;
     const h1Element = document.querySelector('.header-left h1') as HTMLElement;
+    const thElements = document.querySelectorAll('th');
+    thElements.forEach(th => {
+      th.style.paddingTop = '0'; 
+      th.style.paddingBottom = '12px'; 
+    });
   
-    // Temporarily modify styles for image generation
+    const tdElements = document.querySelectorAll('td');
+    tdElements.forEach(td => {
+      if (td.classList.contains('text-left')) {
+        td.style.paddingBottom = '8px'; 
+      }
+    });
+  
     if (contentLeftElement) {
-      contentLeftElement.style.paddingTop = '0'; // Set padding-top to 0
+      contentLeftElement.style.paddingTop = '0'; 
     }
     if (h1Element) {
-      h1Element.style.paddingBottom = '10px'; // Set padding-bottom to 10px
+      h1Element.style.paddingBottom = '10px'; 
     }
   
     if (invoiceElement) {
@@ -139,18 +179,26 @@ const Invoice: React.FC<InvoiceTProps> = ({ folderName }) => {
         link.href = imgData;
         link.download = 'invoice.png';
         link.click();
-  
-        // Reset styles after generating image
+        thElements.forEach(th => {
+          th.style.paddingTop = '';
+          th.style.paddingBottom = '';
+        });
+        tdElements.forEach(td => {
+          if (td.classList.contains('text-left')) {
+            td.style.paddingBottom = '';
+          }
+        });
         if (contentLeftElement) {
-          contentLeftElement.style.paddingTop = ''; // Reset padding-top
+          contentLeftElement.style.paddingTop = ''; 
         }
         if (h1Element) {
-          h1Element.style.paddingBottom = ''; // Reset padding-bottom
+          h1Element.style.paddingBottom = ''; 
         }
       });
     }
   };
   
+
   if (!invoiceDetails) {
     return <p>Loading...</p>;
   }
@@ -177,11 +225,39 @@ const Invoice: React.FC<InvoiceTProps> = ({ folderName }) => {
           className="p-2 bg-[#d3f320] text-black rounded border roboto-bold border-black shadow-[3px_3px_0px_black] transition-transform hover:translate-x-1 hover:translate-y-1">
           Download Image
         </button>
+        
       </div>
+      <div className='w-[695px] mx-auto mb-5 mt-10 flex flex-row space-x-4'>
+        <input
+          type="text"
+          placeholder="Nama"
+          value={nama}
+          onChange={(e) => setNama(e.target.value)}
+          className={`mt-1 w-full bg-transparent border rounded border-black shadow-[5px_5px_0px_black] p-2 focus:scale-105 focus:outline-none transition-all duration-300 ease-in-out justify-left max-w-[200px] ${!nama && error ? 'border-red-500 shadow-[5px_5px_0px_red]' : ''}`}
+        />
+        <input
+          type="text"
+          placeholder="Jabatan"
+          value={jabatan}
+          onChange={(e) => setJabatan(e.target.value)}
+          className={`mt-1 w-full bg-transparent border rounded border-black shadow-[5px_5px_0px_black] p-2 focus:scale-105 focus:outline-none transition-all duration-300 ease-in-out justify-left max-w-[200px] ${!jabatan && error ? 'border-red-500 shadow-[5px_5px_0px_red]' : ''}`}
+        />
+        
+        <input
+          id="signatureInput"
+          type="file"
+          accept="image/*"
+          onChange={handleImageChange}
+          className={`mt-1 w-full bg-transparent border rounded border-black shadow-[5px_5px_0px_black] p-2 focus:scale-105 focus:outline-none transition-all duration-300 ease-in-out justify-left max-w-[200px] ${!signature && error ? 'border-red-500 shadow-[5px_5px_0px_red]' : ''}`}
+          placeholder='Tanda Tangan' 
+        />
+
+        {error && <p className="text-red-500 text-sm">{error}</p>}
+    </div>
+
       <div className="w-[794px] h-[1123px] background-images justify-center mx-auto" id="invoice">
         <div className="main w-full h-full pt-[160px] px-[80px] space-x-2 flex">
-          
-        <div className="content-left w-[215px] text-[#50723e] ml-5 pt-[10px]">
+          <div className="content-left w-[215px] text-[#50723e] ml-5 pt-[10px]">
             <div className="header-left mb-6 w-full">
               <h1 className="uppercase text-4xl roboto-bold">Invoice</h1>
               <p className="uppercase text-[0.73rem] roboto-bold">CV. Tuai Dimensi Kreasi</p>
@@ -234,11 +310,9 @@ const Invoice: React.FC<InvoiceTProps> = ({ folderName }) => {
                   {invoiceItems.map(item => {
                     const itemTotalPrice = item.price * item.quantity;
                     return (
-                      <tr key={item.id} className="text-[0.7rem]">
-                        <td className="px-1 border-b border-gray-200 text-left roboto-medium flex flex-col">
-                          <p>{item.description}</p>
-                          <p className="text-[0.65rem]">{item.company}</p>
-                          <p>({new Date(item.tanggal_dimulai).toLocaleDateString()} - {new Date(item.tanggal_berakhir).toLocaleDateString()})</p>
+                      <tr key={item.id} className="content-table">
+                        <td className="px-1 border-b border-gray-200 text-left roboto-reguler whitespace-pre">
+                          {item.description}
                         </td>
                         <td className="py-2 px-4 border-b border-gray-200 text-center border-x border-dotted roboto-reguler">{item.quantity}</td>
                         <td className="py-2 px-4 border-b border-gray-200 text-center border-x border-dotted roboto-reguler">{item.price.toLocaleString()}</td>
@@ -249,13 +323,13 @@ const Invoice: React.FC<InvoiceTProps> = ({ folderName }) => {
                   <tr className="text-[0.7rem]">
                     <td className="py-1 px-4 border-gray-200 border-l"></td>
                     <td className="py-1 px-4 border-b border-gray-200 border-x border-dotted"></td>
-                    <td className="py-1 px-4 border-b border-gray-200 border-x border-dotted text-left roboto-reguler">Subtotal</td>
+                    <td className="py-1 px-1 border-b border-gray-200 border-x border-dotted text-left roboto-reguler">Subtotal</td>
                     <td className="py-1 px-1 border-b border-gray-200 border-x border-dotted text-right roboto-reguler">IDR {subtotal.toLocaleString()}</td>
                   </tr>
                   <tr className="text-[0.7rem] border-y border-black">
                     <td className="py-1 px-4 border-gray-200 border-l"></td>
                     <td className="py-1 px-4 border-gray-200 border-x border-dotted"></td>
-                    <td className="py-1 px-4 border-gray-200 border-x border-dotted text-left roboto-reguler">Total</td>
+                    <td className="py-1 px-1 border-gray-200 border-x border-dotted text-left roboto-reguler">Total</td>
                     <td className="py-1 px-1 border-gray-200 border-x border-dotted text-right roboto-reguler">IDR {totalAmount.toLocaleString()}</td>
                   </tr>
                 </tbody>
@@ -267,43 +341,29 @@ const Invoice: React.FC<InvoiceTProps> = ({ folderName }) => {
               Atas perhatiannya kami ucapkan terima kasih.
             </p>
             <p className="roboto-reguler text-gray-500 text-[0.58rem] mb-6 mt-8">Dengan Hormat</p>
-            <div className="w-[160px] h-[90px] roboto-reguler text-gray-500 text-[0.58rem]">            
-              {signature ? (
-                <img 
-                  src={signature} 
-                  alt="Tanda Tangan" 
-                  className="w-full h-full cursor-pointer" 
-                  onClick={() => document.getElementById('signatureInput')?.click()} 
-                />
-              ) : (
-                <p className="cursor-pointer" onClick={() => document.getElementById('signatureInput')?.click()}>Tanda Tangan Belum Diunggah</p>
-              )}
-  
-              <input
-                id="signatureInput" 
-                type="file"
-                accept="image/*"
-                onChange={handleImageChange}
-                className="hidden" 
+            <div className="w-[160px] h-[90px] roboto-reguler text-gray-500 text-[0.58rem]">
+            {signature ? (
+              <img 
+                src={signature} 
+                alt="Tanda Tangan" 
+                className="w-full h-full cursor-pointer" 
+                onClick={() => document.getElementById('signatureInput')?.click()} 
               />
-              
-              <input
-                type="text"
-                placeholder="Nama"
-                className="mt-2 w-full bg-transparent border-transparent focus:border-transparent focus:outline-none"
-              />
-              
-              <input
-                type="text"
-                placeholder="(Jabatan)"
-                className="mt-1 w-full bg-transparent border-transparent focus:border-transparent focus:outline-none"
-              />
-            </div>
+            ) : (
+              <p className="cursor-pointer" onClick={() => document.getElementById('signatureInput')?.click()}>
+                Tanda Tangan Belum Diunggah
+              </p>
+            )}
+            
+            <p>{nama}</p>
+            <p>{jabatan}</p>
+          </div>
           </div>
         </div>
       </div>
     </div>
   );
 };
+
 
 export default Invoice;

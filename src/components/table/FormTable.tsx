@@ -1,13 +1,10 @@
 import React, { useState } from 'react';
 import { supabase } from '../../supabaseClient';
-import { useNavigate } from 'react-router-dom'; 
-import Swal from 'sweetalert2'; 
+import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 interface Product {
   description: string;
-  company: string;
-  tanggal_dimulai: string;
-  tanggal_berakhir: string;
   quantity: number;
   price: number;
   folder_name: string;
@@ -30,16 +27,13 @@ const FormTable: React.FC<{ folderName: string }> = ({ folderName }) => {
   const [products, setProducts] = useState<Product[]>([
     {
       description: '',
-      company: '',
-      tanggal_dimulai: '',
-      tanggal_berakhir: '',
       quantity: 1,
       price: 0,
       folder_name: folderName,
     },
   ]);
   
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   const handleProductChange = (index: number, key: keyof Omit<Product, 'folder_name'>, value: any) => {
     const newProducts = [...products];
@@ -47,14 +41,18 @@ const FormTable: React.FC<{ folderName: string }> = ({ folderName }) => {
     setProducts(newProducts);
   };
 
+  const handleDescriptionKeyDown = (index: number, event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (event.key === 'Enter') {
+      event.preventDefault(); // Prevent form submission
+      handleProductChange(index, 'description', products[index].description + '\n'); // Add a newline
+    }
+  };
+
   const addProduct = () => {
     setProducts([
       ...products,
       {
         description: '',
-        company: '',
-        tanggal_dimulai: '',
-        tanggal_berakhir: '',
         quantity: 1,
         price: 0,
         folder_name: folderName,
@@ -69,51 +67,35 @@ const FormTable: React.FC<{ folderName: string }> = ({ folderName }) => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    let valid = true;
-    products.forEach((product, index) => {
-      if (new Date(product.tanggal_berakhir) < new Date(product.tanggal_dimulai)) {
-        valid = false;
-        Swal.fire('Error', `Tanggal Berakhir cannot be earlier than Tanggal Dimulai for product ${index + 1}`, 'error');
+    try {
+      const { error } = await supabase.from('table_invoice').insert(products);
+      if (error) {
+        Swal.fire('Failed', 'Failed to submit data: ' + error.message, 'error');
+      } else {
+        Swal.fire({
+          title: 'Success!',
+          text: 'Data successfully submitted!',
+          icon: 'success',
+          timer: 1000,
+          showConfirmButton: false,
+        });
+
+        setTimeout(() => {
+          navigate('/');
+        }, 1000);
+
+        // Resetting the form after submission
+        setProducts([
+          {
+            description: '',
+            quantity: 1,
+            price: 0,
+            folder_name: folderName,
+          },
+        ]);
       }
-    });
-
-    if (valid) {
-      try {
-        const { error } = await supabase.from('table_invoice').insert(products);
-        if (error) {
-          Swal.fire('Failed', 'Failed to submit data: ' + error.message, 'error');
-        } else {
-          Swal.fire({
-            title: 'Success!',
-            text: 'Data successfully submitted!',
-            icon: 'success',
-            timer: 1000,
-            showConfirmButton: false,
-          });
-
-          setTimeout(() => {
-            navigate('/'); 
-          }, 1000); 
-
-          setProducts([
-            {
-              description: '',
-              company: '',
-              tanggal_dimulai: '',
-              tanggal_berakhir: '',
-              quantity: 1,
-              price: 0,
-              folder_name: folderName,
-            },
-          ]);
-        }
-      } catch (err) {
-        if (err instanceof Error) {
-          Swal.fire('Error', 'Error: ' + err.message, 'error');
-        } else {
-          Swal.fire('Error', 'An unknown error occurred', 'error');
-        }
-      }
+    } catch (err) {
+      Swal.fire('Error', 'An unknown error occurred', 'error');
     }
   };
 
@@ -136,34 +118,14 @@ const FormTable: React.FC<{ folderName: string }> = ({ folderName }) => {
         <tbody>
           {products.map((product, index) => (
             <tr key={index} className="text-[0.7rem]">
-              <td className="px-2 py-2 border-b border-gray-200 text-left roboto-medium flex flex-col space-y-2">
-                <input
-                  type="text"
+              <td className="px-2 py-2 border-b border-gray-200 text-left roboto-medium">
+                <textarea
                   value={product.description}
                   onChange={(e) => handleProductChange(index, 'description', e.target.value)}
+                  onKeyDown={(e) => handleDescriptionKeyDown(index, e)}
                   placeholder="Keterangan Produk"
-                  className="w-full px-2 py-1 border border-gray-300 rounded-md"
-                />
-                <input
-                  type="text"
-                  value={product.company}
-                  onChange={(e) => handleProductChange(index, 'company', e.target.value)}
-                  placeholder="Perusahaan Produk"
-                  className="w-full px-2 py-1 border border-gray-300 rounded-md mt-1"
-                />
-                <input
-                  type="date"
-                  value={product.tanggal_dimulai}
-                  onChange={(e) => handleProductChange(index, 'tanggal_dimulai', e.target.value)}
-                  className="w-full px-2 py-1 border border-gray-300 rounded-md mt-1"
-                  placeholder='Tanggal Dimulai'
-                />
-                <input
-                  type="date"
-                  value={product.tanggal_berakhir}
-                  onChange={(e) => handleProductChange(index, 'tanggal_berakhir', e.target.value)}
-                  className="w-full px-2 py-1 border border-gray-300 rounded-md mt-1"
-                  placeholder='Tanggal Berakhir'
+                  className="w-full px-2 py-1 border border-gray-300 rounded-md resize-none"
+                  rows={3} // Adjust rows for initial height
                 />
               </td>
               <td className="py-2 px-4 border-b border-gray-200 text-center border-x border-dotted roboto-reguler">
